@@ -2,54 +2,56 @@
 import React, { useState } from "react";
 import { Form, Nav } from "react-bootstrap";
 import FormRange from "react-bootstrap/esm/FormRange";
-import { CgProfile } from "react-icons/cg";
 import { useLocation } from "react-router-dom";
+import { filterChecks } from "../../helpers/storage";
+import { useFilterValue } from "../../Context/filterContext";
 
 const Sidebar = () => {
-  const [price, setPrice] = useState("0");
+  
 
-  const {pathname} =  useLocation();
+  const { pathname } = useLocation();
+  const {handleFilterChecks , priceFilter , setPriceFilter} = useFilterValue()
+
 
   return (
     <div>
-    {pathname === "/" &&
-    <>
-    <div className="sidebar">
-      {/* Logo */}
-      <div className="sidebar-logo text-center py-3 pb-0">
-        <h1 className="logo-text text-center">Just Buy E-com</h1>
-      </div>
-      {/* <Divider/> */}
-      <hr></hr>
+      {pathname === "/" && (
+        <>
+          <div className="sidebar ">
+            {/* Logo */}
+            <div className="sidebar-logo text-center py-3 pb-0">
+              <h1 className="logo-text text-center">Just Buy E-com</h1>
+            </div>
+            {/* <Divider/> */}
+            <hr></hr>
 
-      <Form.Label>Price</Form.Label>
-      <FormRange value={price} onChange={(e) => setPrice(e.target.value)} />
+            <Form.Label>Price : {priceFilter}</Form.Label>
+            <FormRange
+              value={priceFilter}
+              onChange={(e) => setPriceFilter(e.target.value)}
+              // min={100}
+              max={100000}
+            />
 
-      <h2 className="text-white  mt-3">Category</h2>
-      <div className="d-flex flex-column justify-content-center  w-100">
-      <Form.Check // prettier-ignore
-        type="checkbox"
-        label="Mens Clothing"
-        className="mt-2"
-      />
-        <Form.Check // prettier-ignore
-        type="checkbox"
-        label="Womens Clothing"
-        className="mt-2"
-      />
-        <Form.Check // prettier-ignore
-        type="checkbox"
-        label="Jwellery"
-        className="mt-2"
-      />
-        <Form.Check // prettier-ignore
-        type="checkbox"
-        label="Electronics"
-        className="mt-2"
-      />
-      </div>
-    </div>
-    </>  }
+            <h2 className="text-white  mt-3">Category</h2>
+            <div className="d-flex flex-column justify-content-center  w-100">
+              {filterChecks.map((item, index) => {
+                return (
+                  <div key={index}>
+                  <Form.Check
+                    type="checkbox"
+                    label={item.label}
+                    value={item.value}
+                    className="mt-2"
+                    onChange={(e) => handleFilterChecks(e.target.checked , e.target.value) }
+                  />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

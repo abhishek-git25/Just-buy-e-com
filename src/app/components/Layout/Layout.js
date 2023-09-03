@@ -9,12 +9,13 @@ import Header from '../Header/Header';
 const Layout = () => {
   return (
     <div className="layout">
+   
       <Sidebar />
       <div className="content">
         <Header />
         {/* The Outlet will render the appropriate child route component */}
-        <Container fluid>
-          <Row>
+        <Container fluid  >
+          <Row >
             <Col>
               <Outlet />
             </Col>
